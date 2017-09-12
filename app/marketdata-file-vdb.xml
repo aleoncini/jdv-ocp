@@ -3,15 +3,15 @@
     <model name="file">
         <source name="text-connector" translator-name="file" connection-jndi-name="java:/marketdata-DS"/>
     </model>
-    <model name="marketdata" type="VIRTUAL">
+    <model name="dataview" type="VIRTUAL">
         <metadata type="DDL"><![CDATA[
-                
+
         CREATE VIEW StockPrices (
             symbol string PRIMARY KEY,
             price bigdecimal
-        ) AS  
+        ) AS
           SELECT SP.symbol, SP.price
-          FROM (EXEC file.getTextFiles('*.txt')) AS f, 
+          FROM (EXEC file.getTextFiles('*.txt')) AS f,
             TEXTTABLE(f.file COLUMNS symbol string, price bigdecimal HEADER) AS SP;
         ]]>
         </metadata>
